@@ -1,0 +1,65 @@
+﻿
+@page "/addinventory"
+
+@inject IAddInventoryUseCase AddInventoryUseCase
+
+@inject NavigationManager NavigationManager
+
+<h3>Add Inventory</h3>
+<br />
+
+<EditForm Model="inventory" FormName="formInventory" OnValidSubmit="Save">
+	<DataAnnotationsValidator/>
+	<ValidationSummary />
+
+	<div class="form-group">
+		<label for="name">Inventory Name</label>
+		<InputText 
+		id="name"
+		@bind-value="inventory.InventoryName"
+		class="form-control" />
+		<ValidationMessage For="() => inventory.InventoryName" />
+	</div>
+
+	<div class="form-group">
+		<label for="quantity">Inventory Quantity</label>
+		<InputNumber id="quantity"
+		@bind-value="inventory.Quantity"
+		class="form-control" />
+		<ValidationMessage For="() => inventory.Quantity" />
+	</div>
+
+	<div class="form-group">
+		<label for="price">Inventory Price</label>
+		<InputNumber id="price"
+		@bind-value="inventory.Price"
+		class="form-control" />
+		<ValidationMessage For="() => inventory.Price" />
+	</div>
+	<br />
+	<button type="submit" class="btn btn-primary">Save</button>
+	&nbsp;
+	<a href="/inventories" class="btn btn-dark">Cancel</a>
+
+</EditForm>
+
+@code {
+	[SupplyParameterFromForm]
+	private Inventory inventory { get; set; } = new Inventory();
+
+
+	private async Task Save()
+	{
+		try
+		{
+			await AddInventoryUseCase.ExecuteAsync(inventory);
+			NavigationManager.NavigateTo("/inventories");
+		}
+		catch (Exception)
+		{
+			
+			throw;
+		}
+	
+	}
+}

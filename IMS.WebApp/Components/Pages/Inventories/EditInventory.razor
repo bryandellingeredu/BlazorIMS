@@ -1,0 +1,66 @@
+﻿@page "/editinventory/{id:int}"
+@inject IViewInventoryByIdUseCase ViewInventoryByIdUseCase
+@inject IEditInventoryUseCase EditInventoryUseCase
+@inject NavigationManager NavigationManager
+
+<h3>Edit Inventory</h3>
+@if (inventory is not null)
+{
+	<EditForm Model="inventory" FormName="formInventory" OnValidSubmit="Update">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<InputNumber hidden @bind-Value="inventory.InventoryId" />
+
+		<div class="form-group">
+			<label for="name">Inventory Name</label>
+			<InputText id="name"
+			@bind-value="inventory.InventoryName"
+			class="form-control" />
+			<ValidationMessage For="() => inventory.InventoryName" />
+		</div>
+
+		<div class="form-group">
+			<label for="quantity">Inventory Quantity</label>
+			<InputNumber id="quantity"
+			@bind-value="inventory.Quantity"
+			class="form-control" />
+			<ValidationMessage For="() => inventory.Quantity" />
+		</div>
+
+		<div class="form-group">
+			<label for="price">Inventory Price</label>
+			<InputNumber id="price"
+			@bind-value="inventory.Price"
+			class="form-control" />
+			<ValidationMessage For="() => inventory.Price" />
+		</div>
+		<br />
+		<button type="submit" class="btn btn-primary">Update</button>
+		&nbsp;
+		<a href="/inventories" class="btn btn-dark">Cancel</a>
+
+	</EditForm>
+}
+
+@code {
+	[Parameter]
+	public int Id{ get; set; }
+
+	[SupplyParameterFromForm]
+	private Inventory? inventory { get; set; }
+
+	protected override async Task OnParametersSetAsync()
+	{
+		inventory ??= await ViewInventoryByIdUseCase.ExecuteAsync(Id);
+	}
+
+	private async Task Update()
+	{
+		if (inventory is not null)
+		{
+			await EditInventoryUseCase.ExecuteAsync(inventory);
+			NavigationManager.NavigateTo("/inventories");
+		}
+	}
+}
