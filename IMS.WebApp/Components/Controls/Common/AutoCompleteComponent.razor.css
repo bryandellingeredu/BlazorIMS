@@ -11,6 +11,10 @@ div ul {
     padding-left: 10px;
 }
 
-div ul li{
-    cursor: pointer
-}
+    div ul li {
+        cursor: pointer
+    }
+
+    .selected{
+      background-color:antiquewhite;
+    }
