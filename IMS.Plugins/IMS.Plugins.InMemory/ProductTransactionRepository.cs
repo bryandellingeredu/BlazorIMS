@@ -64,5 +64,23 @@ namespace IMS.Plugins.InMemory
             });
 
         }
+
+        public  Task SellProductAsync(string salesOrderNumber, Product product, int quantity, double unitPrice,  string doneBy)
+        {
+            // add product transaction
+            _productTransactions.Add(new ProductTransaction
+            {
+                SONumber = salesOrderNumber,
+                ProductId = product.ProductId,
+                QuantityBefore = product.Quantity,
+                ActivityType = ProductTransactionType.SellProduct,
+                QuantityAfter = product.Quantity - quantity,
+                TransactionDate = DateTime.Now,
+                DoneBy = doneBy,
+                UnitPrice = unitPrice
+            });
+
+            return Task.CompletedTask;
+        }
     }
 }
