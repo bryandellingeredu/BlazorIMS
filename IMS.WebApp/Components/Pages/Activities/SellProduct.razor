@@ -10,6 +10,8 @@
 
 @page "/sell"
 
+@attribute [Authorize]
+
 <h3>Sell Product</h3>
 
 <EditForm Model="sellViewModel" OnValidSubmit="Sell" id="sell-form">
