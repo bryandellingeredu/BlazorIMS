@@ -29,6 +29,6 @@ namespace IMS.CoreBusiness
 
         [Required]
         public InventoryTransactionType ActivityType { get; set; }
-        public string ProductionNumber { get; set; }
+        public string ProductionNumber { get; set; } = string.Empty;
     }
 }
